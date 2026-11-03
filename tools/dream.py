@@ -115,9 +115,9 @@ def trim(s):
     return s
 
 
-def fragments(rel):
-    """从一个 md 里抠出几句能当碎片用的。"""
-    path = os.path.join(ROOM, rel)
+def fragments(rel, base=None):
+    """从一个 md 里抠出几句能当碎片用的。base 不填就读房间目录。"""
+    path = os.path.join(base or ROOM, rel)
     try:
         with open(path, encoding="utf-8", errors="replace") as f:
             txt = f.read()
@@ -144,6 +144,10 @@ def fragments(rel):
             continue
         if any(w in s for w in STATS):            # 播放量、时长这类统计
             continue
+        if "`" in s:                              # 代码片段
+            continue
+        if any(c in s for c in "├└│┌┐┘━═"):       # 树形符号 / 分隔线
+            continue
         if re.search(r"第\s*\d+\s*[/／]\s*\d+", s):   # "第 307 / 393 条"
             continue
         if re.fullmatch(r"[0-9\s%/／,，.．:：~～°C-]+", s):  # 纯数字
@@ -160,11 +164,11 @@ def fragments(rel):
     return out
 
 
-def gather(rng, need=4):
-    """从不同的来源各抽一句。"""
+def gather(rng, need=4, base=None, sources=None):
+    """从不同的来源各抽一句。base 不填就读房间目录。"""
     pool = []
-    for rel, tag in SOURCES:
-        fs = fragments(rel)
+    for rel, tag in (sources or SOURCES):
+        fs = fragments(rel, base)
         if fs:
             pool.append((tag, rng.choice(fs)))
     if not pool:
@@ -172,6 +176,21 @@ def gather(rng, need=4):
     rng.shuffle(pool)
     # 尽量不同来源，不够再重复也行
     return pool[:max(1, min(need, len(pool)))]
+
+
+def gather_from_dir(directory, rng, need=4):
+    """给仓库自带 demo 用：从任意目录里的 md 抽碎片（含子目录），不需要房间。"""
+    sources = []
+    try:
+        for root, _, files in os.walk(directory):
+            for f in files:
+                if f.lower().endswith(".md"):
+                    rel = os.path.relpath(os.path.join(root, f), directory)
+                    sources.append((rel, "素材"))
+    except OSError:
+        return []
+    sources.sort()
+    return gather(rng, need=need, base=directory, sources=sources[:14])
 
 
 def build(rng, pieces):

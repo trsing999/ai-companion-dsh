@@ -1,0 +1,5 @@
+# 只装两个。其余全部标准库。
+# 感知层（breath.py / dream.py / bubble_gate.py / cleanup.py）不需要任何第三方包。
+
+Pillow>=9.0
+opencv-python>=4.5

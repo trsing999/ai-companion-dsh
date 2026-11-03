@@ -82,28 +82,43 @@
 
 ---
 
-## 快速开始
+## 30 秒先看一眼
 
 ```bash
-git clone <this-repo>
-cd ai-companion-dsh
-
-# 1. 依赖（Windows）
-#    Python 3.9+
-pip install pillow opencv-python
-
-# 2. 配置（全部是假值，按需填）
-cp config/examples/mobile_push.example.json ~/.dsh/mobile_push.json
-
-# 3. 跑单个服务试试
-python tools/breath.py --show          # 读硬件，不写文件
-python tools/dream.py --show           # 拼一个梦，不花 token
-python tools/bubble_gate.py            # 看气泡额度
+pip install -r requirements.txt
+python tools/doctor.py     # 自检：这台机器能跑哪些，缺什么
+python tools/demo.py       # 演示：零成本看它在干什么
 ```
 
-完整搭建见 [`docs/SETUP.md`](docs/SETUP.md)。
+`demo.py` 会当场演示三件事，**一次模型都不调、一个文件都不写**：
 
-> ⚠️ 脚本里有硬编码的家目录推导（`os.path.expanduser("~")`），但**部分脚本假设工作目录在 `tools/` 的上一级**。移植时需要按 `docs/SETUP.md` 调整。
+```
+① 感知   读这台机器的 CPU / 内存 / 电量（纯 ctypes，不用 psutil）
+② 做梦   把样例房间里的碎片硬拼成一段梦（纯字符串，0 token）
+③ 限流   气泡有额度，连发三条会被拦（跨进程文件锁）
+```
+
+---
+
+## ⚠️ 这不是开箱即用的产品
+
+它是**参考实现**。克隆下来能立刻跑的是感知层和工具层，**完整系统需要宿主**：
+
+| 想要 | 需要什么 |
+|---|---|
+| 量硬件、做梦、看限流、清缓存 | ✅ 克隆就能跑 |
+| 自助看课、读经典、抓天气 | + `opencv-python`（看课还要 B 站登录态） |
+| 发手机推送、收发邮件 | + 各自的配置文件（见 `config/examples/`） |
+| **完整的人格 + 桥接 + 气泡** | **+ [`dsh-world`](https://github.com/) 宿主插件，它不在这个仓库里** |
+
+没有宿主，你能看到全部代码逻辑，但不能让她"活着"。
+
+---
+
+## 完整搭建
+
+见 [`docs/SETUP.md`](docs/SETUP.md)：目录约定、配置清单、启动顺序、移植注意事项（含几个踩过的坑）。
+
 
 ---
 
