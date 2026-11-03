@@ -1,0 +1,28 @@
+# 这个仓库不含任何真实配置或隐私数据
+# 配置样例在 config/examples/，全是假值
+
+# 运行产物
+logs/
+downloads/
+__pycache__/
+*.pyc
+*.pyo
+
+# 真实配置（绝对不要提交）
+mobile_push.json
+mobile_approval.json
+email_bridge.json
+bili_session.json
+session.json
+*.local.json
+
+# 房间内容（私人数据，只留样例）
+room/
+worlds/
+
+# 系统垃圾
+.DS_Store
+Thumbs.db
+desktop.ini
+*.tmp
+*.bak

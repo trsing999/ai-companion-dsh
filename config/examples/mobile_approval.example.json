@@ -1,0 +1,20 @@
+{
+  "_说明": "手机端审批配置。复制到 ~/.dsh/mobile_approval.json。不需要手机审批就把 enabled 设 false。",
+  "enabled": true,
+  "mail": true,
+  "_mail": "邮件审批，最稳，不依赖网络连通",
+  "push": false,
+  "_push": "微信推送。注意：如果邮件已经能用，这里建议关掉，免得每个审批叮两次",
+  "web": true,
+  "_web": "局域网审批页，手机浏览器打开",
+  "python": "",
+  "_python": "留空用 PATH 里的 python；多版本时写绝对路径",
+  "pollSeconds": 5,
+  "bind": "auto",
+  "_bind": "auto = 自动挑无线网卡地址；也可写死某个 IPv4",
+  "port": 18889,
+  "token": "REPLACE_WITH_RANDOM_32_CHARS",
+  "_token": "留空会自动生成",
+  "waitSeconds": 300,
+  "deskDelaySeconds": 0
+}

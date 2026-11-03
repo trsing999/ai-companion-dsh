@@ -1,0 +1,10 @@
+{
+  "_说明": "手机推送配置。复制到 ~/.dsh/mobile_push.json 后填真值。这个文件不要提交到 git。",
+  "_provider": "wecom = 企业微信群机器人；serverchan = Server酱",
+  "provider": "serverchan",
+  "sendkey": "SCT_FAKE_KEY_REPLACE_ME",
+  "_wecom示例": {
+    "provider": "wecom",
+    "webhook": "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=FAKE-KEY"
+  }
+}
